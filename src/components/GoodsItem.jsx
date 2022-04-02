@@ -1,5 +1,5 @@
 function GoodsItem(props) {
-  const { id, name, description, price, full_background } = props;
+  const { addToBasket, id, name, description, price, full_background } = props;
   return (
     <div class="card" id={id}>
       <div class="card-image">
