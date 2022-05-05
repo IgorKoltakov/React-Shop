@@ -39,6 +39,7 @@ function BasketList(props) {
       )}
       <li href="#!" className="collection-item active">
         Общая стоимость: {totalPrice}
+        <button className="secondary-content btn btn-small right"> Оформить заказ</button>
       </li>
     </div>
   );

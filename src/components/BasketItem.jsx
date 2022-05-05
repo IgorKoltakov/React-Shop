@@ -21,7 +21,7 @@ function BasketItem(props) {
           removeFromBasket(id);
         }}
       >
-        <i className="material-icons basket-delete">close</i>
+        <i className="material-icons basket-delete">delete</i>
       </span>
     </li>
   );
