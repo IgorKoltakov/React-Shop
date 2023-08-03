@@ -1,38 +1,38 @@
 function GoodsItem(props) {
   const {
     addToBasket = Function.prototype,
-    id,
-    name,
-    description,
-    price,
-    full_background,
+    mainId,
+    displayName,
+    displayDescription,
+    displayAssets,
   } = props;
+  const {regularPrice} = props.price
 
   return (
     <>
-      <div className="card" id={id}>
+      <div className="card" id={mainId}>
         <div className="card-image">
-          <img src={full_background} alt={name} />
+          <img src={displayAssets[0].background} alt={displayName} />
         </div>
         <div className="card-content">
-          <span className="card-title">{name}</span>
-          <p>{description}</p>
+          <span className="card-title">{displayName}</span>
+          <p>{displayDescription}</p>
         </div>
         <div className="card-action">
           <button
             className="btn"
             onClick={() =>
               addToBasket({
-                id,
-                name,
-                price,
+                mainId,
+                displayName,
+                regularPrice,
               })
             }
           >
             Купить
           </button>
-          <span className="right" style={{ fontSize: '1.8rem' }}>
-            {price} грн
+          <span className="right" style={{ fontSize: "1.8rem" }}>
+            {regularPrice} грн
           </span>
         </div>
       </div>

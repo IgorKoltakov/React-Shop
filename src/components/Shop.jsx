@@ -1,21 +1,19 @@
-import { useState, useEffect } from 'react';
-import { API_KEY, API_URL } from '../config';
-import { Preloader } from './Preloader';
-import { GoodsList } from './GoodsList';
-import { Cart } from './Cart';
-import { BasketList } from '../components/BasketList';
-import { Alert } from './Alert';
+import { useState, useEffect, createContext } from "react";
+import { API_KEY, API_URL } from "../config";
+import { Preloader } from "./Preloader";
+import { GoodsList } from "./GoodsList";
+import { Cart } from "./Cart";
+import { BasketList } from "../components/BasketList";
+import { Alert } from "./Alert";
+
+export const Context = createContext(null);
 
 function Shop() {
   const [goods, setGoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState([]);
   const [isBasketShow, setBasketShow] = useState(false);
-  const [alertName, setAlertName] = useState('')
-
-  const handleBasketShow = () => {
-    setBasketShow(!isBasketShow);
-  };
+  const [alertName, setAlertName] = useState("");
 
   useEffect(function getGoods() {
     fetch(API_URL, {
@@ -25,13 +23,17 @@ function Shop() {
     })
       .then((response) => response.json())
       .then((data) => {
-        data.featured && setGoods(data.featured);
+        setGoods(data.shop);
         setLoading(false);
       });
   }, []);
 
+  const handleBasketShow = () => {
+    setBasketShow(!isBasketShow);
+  };
+
   const addToBasket = (item) => {
-    const itemIndex = order.findIndex((orderItem) => orderItem.id === item.id);
+    const itemIndex = order.findIndex((orderItem) => orderItem.mainId === item.mainId);
 
     if (itemIndex < 0) {
       const newItem = {
@@ -53,24 +55,24 @@ function Shop() {
 
       setOrder(newOrder);
     }
-    setAlertName(item.name);
+    setAlertName(item.displayName);
   };
 
   const removeFromBasket = (itemId) => {
-    const newArrOrder = order.filter((el) => el.id !== itemId);
+    const newArrOrder = order.filter((el) => el.mainId !== itemId);
     setOrder(newArrOrder);
   };
 
   const incQuantity = (itemId) => {
     const newOrder = order.map((el) => {
-      if (el.id === itemId) {
-        const newQuantity = el.quantity + 1
+      if (el.mainId === itemId) {
+        const newQuantity = el.quantity + 1;
         return {
           ...el,
-          quantity: newQuantity
+          quantity: newQuantity,
         };
       } else {
-        return el
+        return el;
       }
     });
     setOrder(newOrder);
@@ -78,22 +80,22 @@ function Shop() {
 
   const decQuantity = (itemId) => {
     const newOrder = order.map((el) => {
-      if (el.id === itemId) {
-        const newQuantity = el.quantity - 1
+      if (el.mainId === itemId) {
+        const newQuantity = el.quantity - 1;
         return {
           ...el,
-          quantity: newQuantity >=0 ? newQuantity : 0
+          quantity: newQuantity >= 0 ? newQuantity : 0,
         };
       } else {
-        return el
+        return el;
       }
     });
     setOrder(newOrder);
   };
 
   const closeAlert = () => {
-    setAlertName('')
-  }
+    setAlertName("");
+  };
 
   return (
     <main className="conteiner content">
@@ -112,9 +114,7 @@ function Shop() {
           decQuantity={decQuantity}
         />
       )}
-      {
-        alertName && <Alert name={alertName} closeAlert={closeAlert} />
-      }
+      {alertName && <Alert name={alertName} closeAlert={closeAlert} />}
     </main>
   );
 }
