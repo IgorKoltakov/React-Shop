@@ -1,5 +1,6 @@
 {
   "name": "react-shop",
+  "homepage": "https://IgorKoltakov.github.io/React-Shop",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
