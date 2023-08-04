@@ -1,4 +1,6 @@
-# Fortnite Shop
+#React Shop project
 
-![Screenshot](https://github.com/IgorKoltakov/React-Shop/blob/master/1.png)
-![Screenshot](https://github.com/IgorKoltakov/React-Shop/blob/master/2.png)
+i used React, React Context, Bootsrtrap, scss, LocalStorage
+
+[Demo](https://igorkoltakov.github.io/React-Shop/)
+
