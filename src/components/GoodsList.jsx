@@ -1,17 +1,20 @@
+import { useContext } from "react";
 import { GoodsItem } from "./GoodsItem";
+import { Context } from "./Shop";
 
-function GoodsList(props) {
-  const { goods = [], addToBasket = Function.prototype } = props;
-  console.log(goods);
+function GoodsList() {
+  const { goods = [] } = useContext(Context);
 
   if (!goods.length) {
-    return <h3>Nothing here</h3>;
+    return <h3 className="text-center text-uppercase">Nothing here</h3>;
   }
 
   return (
-    <div className="goods">
+    <div className="row">
       {goods.map((item) => (
-        <GoodsItem key={item.mainId} {...item} addToBasket={addToBasket} />
+        <div className="col-xl-3 col-md-6 col-sm-12 d-flex">
+          <GoodsItem key={item.mainId} {...item} />
+        </div>
       ))}
     </div>
   );

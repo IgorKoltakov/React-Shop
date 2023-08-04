@@ -2,16 +2,20 @@ import { useState, useEffect, createContext } from "react";
 import { API_KEY, API_URL } from "../config";
 import { Preloader } from "./Preloader";
 import { GoodsList } from "./GoodsList";
-import { Cart } from "./Cart";
 import { BasketList } from "../components/BasketList";
 import { Alert } from "./Alert";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 
 export const Context = createContext(null);
 
 function Shop() {
+  const getLocalStorage = () => {
+    return JSON.parse(localStorage.getItem("order")) ?? [];
+  };
   const [goods, setGoods] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [order, setOrder] = useState([]);
+  const [order, setOrder] = useState(getLocalStorage());
   const [isBasketShow, setBasketShow] = useState(false);
   const [alertName, setAlertName] = useState("");
 
@@ -28,12 +32,22 @@ function Shop() {
       });
   }, []);
 
+  useEffect(
+    function localStorage() {
+      window.localStorage.setItem("order", JSON.stringify(order));
+      console.log(`set order ${order}`);
+    },
+    [order]
+  );
+
   const handleBasketShow = () => {
     setBasketShow(!isBasketShow);
   };
 
   const addToBasket = (item) => {
-    const itemIndex = order.findIndex((orderItem) => orderItem.mainId === item.mainId);
+    const itemIndex = order.findIndex(
+      (orderItem) => orderItem.mainId === item.mainId
+    );
 
     if (itemIndex < 0) {
       const newItem = {
@@ -98,24 +112,36 @@ function Shop() {
   };
 
   return (
-    <main className="conteiner content">
-      <Cart quantity={order.length} handleBasketShow={handleBasketShow} />
-      {loading ? (
-        <Preloader />
-      ) : (
-        <GoodsList goods={goods} addToBasket={addToBasket} />
-      )}
-      {isBasketShow && (
-        <BasketList
-          order={order}
-          handleBasketShow={handleBasketShow}
-          removeFromBasket={removeFromBasket}
-          incQuantity={incQuantity}
-          decQuantity={decQuantity}
-        />
-      )}
-      {alertName && <Alert name={alertName} closeAlert={closeAlert} />}
-    </main>
+    <Context.Provider
+      value={{
+        handleBasketShow,
+        addToBasket,
+        removeFromBasket,
+        incQuantity,
+        decQuantity,
+        closeAlert,
+        goods,
+        loading,
+        order,
+        setOrder,
+        isBasketShow,
+        alertName,
+      }}
+    >
+      <Header />
+      <section className="main">
+        {loading ? (
+          <Preloader />
+        ) : (
+          <div className="container master">
+            <GoodsList />
+          </div>
+        )}
+        <BasketList />
+        {alertName && <Alert />}
+      </section>
+      <Footer />
+    </Context.Provider>
   );
 }
 
