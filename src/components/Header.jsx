@@ -1,17 +1,17 @@
+import { Cart } from "./Cart";
+
 function Header() {
   return (
-    <nav className="#f50057 pink accent-3">
-      <div className="nav-wrapper">
-        <span href="#" className="brand-logo">
-          React Shop
-        </span>
-        <ul id="nav-mobile" className="right hide-on-med-and-down">
-          <li>
-            <span href="#">Repo</span>
-          </li>
-        </ul>
+    <header className="--bs-primary">
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <div className="text-center text-white">React Shop</div>
+          </div>
+          <Cart />
+        </div>
       </div>
-    </nav>
+    </header>
   );
 }
 
